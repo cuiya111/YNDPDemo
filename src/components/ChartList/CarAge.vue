@@ -14,9 +14,9 @@
 
 <script lang="ts" setup>
     import echarts from "@/echarts/index";
-    import { onMounted, ref, watch } from "vue";
-    import { useChartDataStore } from "@/store/index";
-    import type { CarAgeList } from "@/api/types";
+    import { onMounted, ref } from "vue";
+    // import { useChartDataStore } from "@/stores/chartData";
+    // import type { CarAgeList } from "@/api/types";
     import { grid, axisSplitLine, tooltip, axisLabel } from "@/echarts/options";
     import ChartFrame from "@/components/ChartFrame/index.vue";
 
@@ -27,10 +27,10 @@
     // 是否渲染
     let isRender: boolean = false;
     // 数据
-    const chartData = useChartDataStore();
+    // const chartData = useChartDataStore();
 
     // 渲染图表
-    const renderChart = (value: CarAgeList) => {
+    const renderChart = () => {
         if (!isRender) {
             myChart = echarts.init(chart.value);
             isRender = true;
@@ -41,7 +41,7 @@
             tooltip: tooltip(),
             xAxis: {
                 type: 'category',
-                data: value.map(item => item.groups.replace("[", "").replace("]", "")),
+                data: ['0-5岁', '6-10岁', '11-15岁', '16-20岁', '21-25岁'],
                 axisLabel: axisLabel()
             },
             yAxis: {
@@ -55,7 +55,7 @@
                 {
                     name: "事故数量",
                     type: 'line',
-                    data: value.map(item => item.num),
+                    data: [320, 332, 301, 334, 390],
                     areaStyle:{
                         color: new echarts.graphic.LinearGradient(
                             0, 0, 0, 1,
@@ -83,13 +83,13 @@
         renderChart,
     });
 
-    // 更新图表
-    watch(() => chartData.carAgeList, () => {
-        renderChart(chartData.carAgeList);
-    });
+    // // 更新图表
+    // watch(() => chartData.carAgeList, () => {
+    //     renderChart(chartData.carAgeList);
+    // });
     // 页面加载完成后请求图表数据
     onMounted(async function(){
-        await chartData.getCarAgeData();
+        renderChart();
     });
 </script>
 

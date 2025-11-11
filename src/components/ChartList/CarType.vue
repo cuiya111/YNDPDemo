@@ -14,9 +14,9 @@
 
 <script lang="ts" setup>
     import echarts from "@/echarts/index";
-    import { onMounted, ref, watch } from "vue";
-	import { useChartDataStore } from "@/store/index";
-    import type { CarTypeList } from "@/api/types";
+    import { onMounted, ref } from "vue";
+	// import { useChartDataStore } from "@/store/index";
+    // import type { CarTypeList } from "@/api/types";
     import { fitChartSize } from "@/utils/chartSize";
     import { grid, tooltip } from "@/echarts/options";
     import ChartFrame from "@/components/ChartFrame/index.vue";
@@ -29,10 +29,10 @@
     // 是否渲染
     let isRender: boolean = false;
     // 数据
-    const chartData = useChartDataStore();
+    // const chartData = useChartDataStore();
 
     // 渲染图表
-    const renderChart = (value: CarTypeList) => {
+    const renderChart = () => {
         if (!isRender) {
             myChart = echarts.init(chart.value);
             isRender = true;
@@ -60,10 +60,13 @@
 					labelLayout: {
 						fontSize: fitChartSize(13)
 					},
-					data: value.map(item => ({
-						value: item.num,
-						name: item.carmodels,
-					}))
+					data: [
+                        { value: 1048, name: '小型车' },
+                        { value: 735, name: '中型车' },
+                        { value: 580, name: '大型车' },
+                        { value: 484, name: '摩托车' },
+                        { value: 300, name: '其他' },
+                    ],
 				},
 			],
 		};
@@ -81,13 +84,13 @@
         renderChart,
     });
 
-    // 更新图表
-    watch(() => chartData.carTypeList, () => {
-        renderChart(chartData.carTypeList);
-    });
+    // // 更新图表
+    // watch(() => chartData.carTypeList, () => {
+    //     renderChart(chartData.carTypeList);
+    // });
     // 页面加载完成后请求图表数据
     onMounted(async function(){
-        await chartData.getCarTypeData();
+        renderChart();
     });
 
 

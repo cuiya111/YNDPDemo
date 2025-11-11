@@ -3,7 +3,8 @@
 
         <!-- 左侧图表展示区域 -->
         <div class="left-content show-chart">
-            <Summary></Summary>
+            <!-- <Summary></Summary> -->
+            <ChartCarWeather ref="chartCarWeather"></ChartCarWeather>
             <ChartCarWeather ref="chartCarWeather"></ChartCarWeather>
             <ChartCarAge ref="chartCarAge"></ChartCarAge>
         </div>
@@ -40,7 +41,7 @@
 <script lang="ts" setup>
 
     // 图表组件
-    import Summary from '@/components/ChartList/Summary/index.vue';
+    // import Summary from '@/components/ChartList/Summary/index.vue';
     import ChartCarType from '@/components/ChartList/CarType.vue';
     import ChartCarWeather from '@/components/ChartList/CarWeather.vue';
     import ChartCarAge from '@/components/ChartList/CarAge.vue';

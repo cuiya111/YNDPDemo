@@ -12,9 +12,9 @@
 
 <script lang="ts" setup>
     import echarts from "@/echarts/index";
-    import { onMounted, ref, watch } from "vue";
-    import { useChartDataStore } from "@/store/index";
-    import type { CarWeatherList } from "@/api/types";
+    import { onMounted, ref } from "vue";
+    // import { useChartDataStore } from "@/store/index";
+    // import type { CarWeatherList } from "@/api/types";
     import { fitChartSize } from "@/utils/chartSize";
     import { grid,axisSplitLine, axisLabel, tooltip } from "@/echarts/options";
     import ChartFrame from "@/components/ChartFrame/index.vue";
@@ -26,10 +26,10 @@
     // 是否渲染
     let isRender: boolean = false;
     // 数据
-    const chartData = useChartDataStore();
+    // const chartData = useChartDataStore();
 
     // 渲染图表
-    const renderChart = (value: CarWeatherList) => {
+    const renderChart = () => {
         if (!isRender) {
             myChart = echarts.init(chart.value);
             isRender = true;
@@ -39,7 +39,7 @@
             tooltip: tooltip(),
             xAxis: {
                 type: 'category',
-                data: value.map(item => item.weacondition),
+                data: ["晴天", "雨天", "阴天", "雾天", "雪天", "冰雹"],
                 axisLabel: axisLabel(),
                 splitNumber: 4,
             },
@@ -53,7 +53,7 @@
                 {
                     name: "事故数量",
                     type: 'bar',
-                    data: value.map(item => item.num),
+                    data: [120, 200, 150, 80, 70, 110],
                     itemStyle:{
                         borderRadius: [fitChartSize(5), fitChartSize(5), 0, 0]
                     },
@@ -82,13 +82,13 @@
         renderChart,
     });
 
-    // 更新图表
-    watch(() => chartData.carWeatherList, () => {
-        renderChart(chartData.carWeatherList);
-    });
+    // // 更新图表
+    // watch(() => chartData.carWeatherList, () => {
+    //     renderChart(chartData.carWeatherList);
+    // });
     // 页面加载完成后请求图表数据
     onMounted(async function(){
-        await chartData.getCarWeatherData();
+        renderChart();
     });
 
 

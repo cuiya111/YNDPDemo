@@ -15,9 +15,9 @@
 <script lang="ts" setup>
 
     import echarts from "@/echarts/index";
-    import { onMounted, ref, watch } from "vue";
-    import { useChartDataStore } from "@/store/index";
-    import type { CarMonthList } from "@/api/types";
+    import { onMounted, ref } from "vue";
+    // import { useChartDataStore } from "@/store/index";
+    // import type { CarMonthList } from "@/api/types";
     import { grid, axisSplitLine, axisLabel, tooltip } from "@/echarts/options";
     import ChartFrame from "@/components/ChartFrame/index.vue";
 
@@ -28,10 +28,10 @@
     // 是否渲染
     let isRender: boolean = false;
     // 数据
-    const chartData = useChartDataStore();
+    // const chartData = useChartDataStore();
 
     // 渲染图表
-    const renderChart = (value: CarMonthList) => {
+    const renderChart = () => {
         if (!isRender) {
             myChart = echarts.init(chart.value);
             isRender = true;
@@ -41,12 +41,7 @@
             tooltip: tooltip(),
             xAxis: {
                 type: 'category',
-                data: value.map(item => {
-                    if(item.month.startsWith("0")){
-                        return item.month.slice(1) + "月";
-                    }
-                    return item.month + "月";
-                }),
+                data: ['08月', '09月', '10月', '11月', '12月'],
                 axisLabel: axisLabel()
             },
             yAxis: {
@@ -69,7 +64,7 @@
                         color: '#3176FF',
                         opacity: 0.3
                     },
-                    data: value.map(item => item.num)
+                    data: [320, 332, 301, 334, 390],
                 },
             ],
         };
@@ -87,13 +82,13 @@
         renderChart,
     });
 
-    // 更新图表
-    watch(() => chartData.carMonthList, () => {
-        renderChart(chartData.carMonthList);
-    });
+    // // 更新图表
+    // watch(() => chartData.carMonthList, () => {
+    //     renderChart(chartData.carMonthList);
+    // });
     // 页面加载完成后请求图表数据
     onMounted(async function(){
-        await chartData.getCarMonthData();
+        renderChart();
     });
 
 </script>
